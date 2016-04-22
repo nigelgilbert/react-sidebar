@@ -1,0 +1,39 @@
+{
+  "name": "react-sidebar",
+  "version": "0.0.1",
+  "description": "A Sidebar made with React.",
+  "babel": {
+    "presets": [
+      "es2015",
+      "react"
+    ]
+  },
+  "eslintConfig": {
+    "env": {
+      "es6": true
+    }
+  },
+  "scripts": {
+    "build": "webpack -p --progress",
+    "watch": "webpack-dev-server --content-base src/ --inline --hot"
+  },
+  "dependencies": {
+    "react": "^15.0.1",
+    "react-dom": "^15.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^2.0.0",
+    "babel-core": "^6.4.5",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-react-transform": "^2.0.0",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.5.0",
+    "css-loader": "^0.23.1",
+    "file-loader": "^0.8.5",
+    "json-loader": "^0.5.3",
+    "react-hot-loader": "^1.3.0",
+    "style-loader": "^0.13.0",
+    "webpack": "^1.12.13",
+    "webpack-dev-server": "^1.12.1"
+  }
+}
