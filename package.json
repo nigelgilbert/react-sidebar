@@ -14,7 +14,7 @@
     }
   },
   "scripts": {
-    "build": "webpack -p --progress",
+    "bundle": "webpack -p --progress",
     "watch": "webpack-dev-server --content-base src/ --inline --hot"
   },
   "dependencies": {

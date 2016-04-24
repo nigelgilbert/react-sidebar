@@ -2,6 +2,7 @@
 
 import React from "react";
 import "./sidebar.css";
+import tweener from "../utils/tweener";
 var TWEEN = require("tween.js");
 
 export class SideBar extends React.Component {
@@ -11,7 +12,7 @@ export class SideBar extends React.Component {
     this.state = {
       sidebar: {
         hover: false,
-        left: 0
+        translate: -200
       },
       drawer: {
         open : false,
@@ -19,18 +20,21 @@ export class SideBar extends React.Component {
       }
     };
 
-    this._update = this._update.bind(this);
-    this._update2 = this._update2.bind(this);
-    this._animate = this._animate.bind(this);
-    this._animate2 = this._animate2.bind(this);
+    // clean this up
+    this._updateDrawer = this._updateDrawer.bind(this);
+    this._updateSidebar = this._updateSidebar.bind(this);
+
+    // maybe refactor to 1 function
     this._openDrawer = this._openDrawer.bind(this);
     this._closeDrawer = this._closeDrawer.bind(this);
+
+    // event handling functions
     this._onClick = this._onClick.bind(this);
     this._hoverIn = this._hoverIn.bind(this);
     this._hoverOut = this._hoverOut.bind(this);
   }
 
-  _update(height) {
+  _updateDrawer(height) {
     this.setState({
       drawer: {
         open: this.state.drawer.open,
@@ -39,31 +43,13 @@ export class SideBar extends React.Component {
     });
   }
 
-  _update2(x) {
+  _updateSidebar(t) {
     this.setState({
       sidebar: {
         hover: this.state.sidebar.hover,
-        x: x
+        translate: t
       }
     });
-  }
-
-  _animate2(time) {
-    if (this.state.sidebar.x === 0 ||
-    this.state.sidebar.x === -200) {
-      return;
-    }
-    requestAnimationFrame(this._animate);
-    TWEEN.update(time);
-  }
-
-  _animate(time) {
-    if ((this.state.drawer.height === 120 || this.state.drawer.height === 0)
-    && (this.state.sidebar.x === 0 || this.state.sidebar.x === -200)) {
-      return;
-    }
-    requestAnimationFrame(this._animate);
-    TWEEN.update(time);
   }
 
   _openDrawer() {
@@ -77,15 +63,12 @@ export class SideBar extends React.Component {
       }
     });
 
-    var tween = new TWEEN.Tween(dimensions)
-      .to(target, 400)
+    var tween = tweener(dimensions, target, 400)
       .easing(TWEEN.Easing.Quartic.InOut)
       .onUpdate(function() {
-        context._update(this.height);
+        context._updateDrawer(this.height);
       })
       .start();
-
-    requestAnimationFrame(this._animate);
   }
 
   _closeDrawer() {
@@ -99,15 +82,12 @@ export class SideBar extends React.Component {
       }
     });
 
-    var tween = new TWEEN.Tween(dimensions)
-      .to(target, 500)
+    var tween = tweener(dimensions, target, 500)
       .easing(TWEEN.Easing.Quartic.InOut)
       .onUpdate(function() {
-        context._update(this.height);
+        context._updateDrawer(this.height);
       })
       .start();
-
-    requestAnimationFrame(this._animate);
   }
 
   _onClick() {
@@ -120,7 +100,7 @@ export class SideBar extends React.Component {
   }
 
   _hoverIn() {
-    var dimensions = { translate: this.state.sidebar.x };
+    var dimensions = { translate: this.state.sidebar.translate };
     var target = { translate: 0 };
     var context = this;
 
@@ -130,19 +110,16 @@ export class SideBar extends React.Component {
       }
     });
 
-    var tween = new TWEEN.Tween(dimensions)
-      .to(target, 500)
+    var tween = tweener(dimensions, target, 500)
       .easing(TWEEN.Easing.Cubic.InOut)
       .onUpdate(function() {
-        context._update2(this.translate);
+        context._updateSidebar(this.translate);
       })
       .start();
-
-    requestAnimationFrame(this._animate);
   }
 
   _hoverOut() {
-    var dimensions = { translate: this.state.sidebar.x };
+    var dimensions = { translate: this.state.sidebar.translate };
     var target = { translate: -200 };
     var context = this;
 
@@ -152,19 +129,16 @@ export class SideBar extends React.Component {
       }
     });
 
-    var tween = new TWEEN.Tween(dimensions)
-      .to(target, 400)
+    var tween = tweener(dimensions, target, 400)
       .easing(TWEEN.Easing.Quartic.Out)
       .onUpdate(function() {
-        context._update2(this.translate);
+        context._updateSidebar(this.translate);
       })
       .start();
-
-    requestAnimationFrame(this._animate);
   }
 
   componentDidUpdate() {
-    document.getElementById("slide-right").style.transform = "translate(" + this.state.sidebar.x + "px, 0px)";
+    document.getElementById("slide-right").style.transform = "translate(" + this.state.sidebar.translate + "px, 0px)";
     document.getElementById("slide-down").style.height = this.state.drawer.height + "px";
   }
 
