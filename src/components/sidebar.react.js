@@ -2,6 +2,7 @@
 
 import React from "react";
 import "./sidebar.css";
+import { Drawer } from "./drawer.react";
 import tweener from "../utils/tweener";
 var TWEEN = require("tween.js");
 
@@ -9,169 +10,90 @@ export class SideBar extends React.Component {
 
   constructor() {
     super();
+
     this.state = {
-      sidebar: {
-        hover: false,
-        translate: -200
-      },
-      drawer: {
-        open : false,
-        x: 0
-      }
+      hover: false,
+      translate: -200,
+      active: 0,
     };
 
-    // clean this up
-    this._updateDrawer = this._updateDrawer.bind(this);
-    this._updateSidebar = this._updateSidebar.bind(this);
-
-    // maybe refactor to 1 function
-    this._openDrawer = this._openDrawer.bind(this);
-    this._closeDrawer = this._closeDrawer.bind(this);
-
-    // event handling functions
-    this._onClick = this._onClick.bind(this);
+    this._animateSidebar = this._animateSidebar.bind(this);
+    this._activate = this._activate.bind(this);
     this._hoverIn = this._hoverIn.bind(this);
     this._hoverOut = this._hoverOut.bind(this);
   }
 
-  _updateDrawer(height) {
-    this.setState({
-      drawer: {
-        open: this.state.drawer.open,
-        height: height
-      }
-    });
-  }
+  _animateSidebar(target) {
+    let dimensions = { translate: this.state.translate };
+    this.setState({ hover: !this.state.hover });
 
-  _updateSidebar(t) {
-    this.setState({
-      sidebar: {
-        hover: this.state.sidebar.hover,
-        translate: t
-      }
-    });
-  }
+    let update = (t) => {
+      this.setState({ translate: t });
+    };
 
-  _openDrawer() {
-    var dimensions = { height: this.state.drawer.height };
-    var target = { height: 120 };
-    var context = this;
-
-    this.setState({
-      drawer: {
-        open: true
-      }
-    });
-
-    var tween = tweener(dimensions, target, 400)
-      .easing(TWEEN.Easing.Quartic.InOut)
+    const tween = tweener(dimensions, target, 500)
+      .easing(TWEEN.Easing.Quartic.Out)
       .onUpdate(function() {
-        context._updateDrawer(this.height);
+        update(this.translate);
       })
       .start();
-  }
-
-  _closeDrawer() {
-    var dimensions = { height: this.state.drawer.height };
-    var target = { height: 0 };
-    var context = this;
-
-    this.setState({
-      drawer: {
-        open: false
-      }
-    });
-
-    var tween = tweener(dimensions, target, 500)
-      .easing(TWEEN.Easing.Quartic.InOut)
-      .onUpdate(function() {
-        context._updateDrawer(this.height);
-      })
-      .start();
-  }
-
-  _onClick() {
-    if (this.state.drawer.open === false) {
-      this._openDrawer();
-    }
-    if (this.state.drawer.open === true) {
-      this._closeDrawer();
-    }
   }
 
   _hoverIn() {
-    var dimensions = { translate: this.state.sidebar.translate };
-    var target = { translate: 0 };
-    var context = this;
-
-    this.setState({
-      sidebar: {
-        hover: true
-      }
-    });
-
-    var tween = tweener(dimensions, target, 500)
-      .easing(TWEEN.Easing.Cubic.InOut)
-      .onUpdate(function() {
-        context._updateSidebar(this.translate);
-      })
-      .start();
+    this._animateSidebar({translate: 0});
   }
 
   _hoverOut() {
-    var dimensions = { translate: this.state.sidebar.translate };
-    var target = { translate: -200 };
-    var context = this;
+    this._animateSidebar({translate: -200});
+  }
 
-    this.setState({
-      sidebar: {
-        hover: false
-      }
-    });
-
-    var tween = tweener(dimensions, target, 400)
-      .easing(TWEEN.Easing.Quartic.Out)
-      .onUpdate(function() {
-        context._updateSidebar(this.translate);
-      })
-      .start();
+  _activate(i) {
+    this.setState({active: i});
   }
 
   componentDidUpdate() {
-    document.getElementById("slide-right").style.transform = "translate(" + this.state.sidebar.translate + "px, 0px)";
-    document.getElementById("slide-down").style.height = this.state.drawer.height + "px";
+    document.getElementById("slide-right").style.transform =
+      "translate(" + this.state.translate + "px, 0px)";
   }
 
   render() {
-
-    const drawer = () => {
-        return (
-          <li className="drawer" id="slide-down">
-            <div className="drawer-row"> This is some content that is </div>
-            <div className="drawer-row"> hidden by the drawer. </div>
-          </li>
-        );
-    };
-
     return (
-      <ul className="sidebar"
+      <div className="sidebar"
        id="slide-right"
        onMouseEnter={this._hoverIn}
        onMouseLeave={this._hoverOut}
       >
-        <li className="row">
-          <div id="title-2"> demo 1 </div>
-        </li>
+        <Drawer
+         title="demo 1"
+         index={1}
+         onClick={this._activate}
+         canOpen={this.state.active === 1}
+        >
+          <div className="drawer-row"> This is some content that is </div>
+          <div className="drawer-row"> hidden by the drawer. </div>
+        </Drawer>
 
-        <li className="row">
-          <div id="title-2"> demo 2 </div>
-        </li>
+        <Drawer
+         title="demo 2"
+         index={2}
+         onClick={this._activate}
+         canOpen={this.state.active === 2}
+        >
+          <div className="drawer-row"> This is some content that is </div>
+          <div className="drawer-row"> hidden by the drawer. </div>
+        </Drawer>
 
-        <li className="row" onClick={this._onClick}>
-          <div id="title"> demo 3 </div>
-        </li>
-        { drawer() }
-      </ul>
+        <Drawer
+         title="demo 3"
+         index={3}
+         onClick={this._activate}
+         canOpen={this.state.active === 3}
+        >
+          <div className="drawer-row"> This is some content that is </div>
+          <div className="drawer-row"> hidden by the drawer. </div>
+        </Drawer>
+
+      </div>
     );
   }
 }

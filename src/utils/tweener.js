@@ -1,7 +1,7 @@
 var TWEEN = require("tween.js");
 
 let _isAnimating = false;
-let _cancelAnimation = null;
+let _animationTimeoutHandle = null;
 
 function _animate(time) {
   if (_isAnimating) {
@@ -13,16 +13,16 @@ function _animate(time) {
 export default function tweener(initial, target, duration) {
   _isAnimating = true;
 
-  if (_cancelAnimation !== null) {
-    clearTimeout(_cancelAnimation);
+  if (_animationTimeoutHandle !== null) {
+    clearTimeout(_animationTimeoutHandle);
   }
 
-  let _toggle = () => {
+  let toggle = () => {
     _isAnimating = false;
-    _cancelAnimation = null;
+    _animationTimeoutHandle = null;
   }
 
-  _cancelAnimation = setTimeout(_toggle, duration + 50);
+  _animationTimeoutHandle = setTimeout(toggle, duration + 50);
 
   requestAnimationFrame(_animate);
   return new TWEEN.Tween(initial).to(target, duration);
