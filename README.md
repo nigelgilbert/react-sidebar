@@ -1,4 +1,4 @@
 ### React Sidebar
 
-A sidebar made with React.
+A clean sidebar made with React. [Check it out.](http://nigelgilbert.github.io/react-sidebar/)
 
