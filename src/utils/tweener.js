@@ -1,3 +1,5 @@
+"use strict";
+
 var TWEEN = require("tween.js");
 
 let _isAnimating = false;
