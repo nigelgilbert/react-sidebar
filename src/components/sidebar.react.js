@@ -64,8 +64,8 @@ export class SideBar extends React.Component {
        onMouseLeave={this._hoverOut}
       >
         <Drawer
-         title="demo 1"
          index={1}
+         title="demo 1"
          onClick={this._activate}
          canOpen={this.state.active === 1}
         >
@@ -74,8 +74,8 @@ export class SideBar extends React.Component {
         </Drawer>
 
         <Drawer
-         title="demo 2"
          index={2}
+         title="demo 2"
          onClick={this._activate}
          canOpen={this.state.active === 2}
         >
@@ -84,8 +84,8 @@ export class SideBar extends React.Component {
         </Drawer>
 
         <Drawer
-         title="demo 3"
          index={3}
+         title="demo 3"
          onClick={this._activate}
          canOpen={this.state.active === 3}
         >
