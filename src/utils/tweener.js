@@ -13,18 +13,18 @@ function _animate(time) {
 }
 
 export default function tweener(initial, target, duration) {
-  _isAnimating = true;
-
   if (_animationTimeoutHandle !== null) {
     clearTimeout(_animationTimeoutHandle);
   }
 
+  _isAnimating = true;
+
   let toggle = () => {
     _isAnimating = false;
     _animationTimeoutHandle = null;
-  }
+  };
 
-  _animationTimeoutHandle = setTimeout(toggle, duration + 50);
+  _animationTimeoutHandle = setTimeout(toggle, duration + 25);
 
   requestAnimationFrame(_animate);
   return new TWEEN.Tween(initial).to(target, duration);
