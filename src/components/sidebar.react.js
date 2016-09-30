@@ -6,6 +6,10 @@ import { Drawer } from "./drawer.react";
 import tweener from "../utils/tweener";
 var TWEEN = require("tween.js");
 
+import { Demo1 } from "./demos/demo1.react";
+import { Demo2 } from "./demos/demo2.react";
+
+
 export class SideBar extends React.Component {
 
   constructor() {
@@ -69,8 +73,7 @@ export class SideBar extends React.Component {
          onClick={this._activate}
          canOpen={this.state.active === 1}
         >
-          <div className="drawer-row"> This is some content that is </div>
-          <div className="drawer-row"> hidden by the drawer. </div>
+          <Demo1/>
         </Drawer>
 
         <Drawer
@@ -79,8 +82,7 @@ export class SideBar extends React.Component {
          onClick={this._activate}
          canOpen={this.state.active === 2}
         >
-          <div className="drawer-row"> This is some content that is </div>
-          <div className="drawer-row"> hidden by the drawer. </div>
+          <Demo2/>
         </Drawer>
 
         <Drawer

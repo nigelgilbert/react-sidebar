@@ -12,14 +12,14 @@ export class Drawer extends React.Component {
     index: React.PropTypes.number.isRequired,
     onClick: React.PropTypes.func.isRequired,
     canOpen: React.PropTypes.bool.isRequired,
-  };
+  }
 
   constructor() {
     super();
     this.state = {
       open: false,
       height: 0
-    };
+    }
 
     this._onClick = this._onClick.bind(this);
     this._animateDrawer = this._animateDrawer.bind(this);
