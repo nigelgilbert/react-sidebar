@@ -4,8 +4,8 @@ const TWEEN = require("tween.js");
 
 // Used to cleanup the browser's AnimationFrame after our 
 // animation completes.
-const previousCompletionHandler = null;
-const isAnimating = false;
+let previousCompletionHandler = null;
+let isAnimating = false;
 
 // Wrapper Service for the Tween.js lib that handles AnimationFrame
 // setup and cleanup.  Also allows multiple animations to use the
